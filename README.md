@@ -3,6 +3,15 @@
 AI-powered real estate valuation platform.
 Includes a full user interface + admin control panel.
 
+
+![Screenshot](1.jpeg)
+![Screenshot](7.jpeg)
+![Screenshot](2.jpeg)
+![Screenshot](Screenshot.jpeg)
+![Screenshot](Screenshot.jpeg)
+![Screenshot](Screenshot.jpeg)
+![Screenshot](Screenshot.jpeg)
+
 ---
 
 ##  Project Structure
