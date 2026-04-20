@@ -1,0 +1,8 @@
+{
+  "name": "XGBoost",
+  "mae": 7.04,
+  "mse": 121.74,
+  "rmse": 11.03,
+  "r2": 0.8226,
+  "file": "models/xgboost.pkl"
+}
