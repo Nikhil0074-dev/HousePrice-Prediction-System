@@ -1,0 +1,64 @@
+{% extends "user/base.html" %}
+{% block title %}My Prediction History{% endblock %}
+
+{% block extra_css %}
+<style>
+  .history-card { background:#fff; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,.06); overflow:hidden; }
+  .history-header { background:linear-gradient(135deg,var(--primary),#2a5580); color:#fff; padding:1.5rem 2rem; }
+  .history-header h3 { font-family:'DM Serif Display',serif; margin:0; }
+  .table th { font-size:.82rem; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:600; border-top:none; }
+  .table td { vertical-align:middle; font-size:.9rem; }
+  .price-badge { background:linear-gradient(135deg,var(--primary),#2a5580); color:#fff; padding:.3rem .9rem; border-radius:20px; font-weight:700; font-size:.9rem; }
+  .empty-state { text-align:center; padding:4rem 2rem; color:var(--muted); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="history-card">
+  <div class="history-header">
+    <h3><i class="fas fa-history me-2"></i>My Prediction History</h3>
+    <p class="mb-0 mt-1" style="opacity:.8; font-size:.9rem">All your previous property price predictions</p>
+  </div>
+
+  {% if predictions %}
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Location</th>
+          <th>Config</th>
+          <th>Area</th>
+          <th>Type</th>
+          <th>Furnished</th>
+          <th>Model</th>
+          <th>Predicted Price</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in predictions %}
+        <tr>
+          <td class="text-muted">{{ loop.index }}</td>
+          <td><i class="fas fa-map-marker-alt me-1" style="color:var(--accent)"></i>{{ p.location }}</td>
+          <td>{{ p.bedrooms }} BHK / {{ p.bathrooms }}B</td>
+          <td>{{ p.area_sqft }} sqft</td>
+          <td>{{ p.property_type }}</td>
+          <td><span class="badge bg-light text-dark">{{ p.furnished }}</span></td>
+          <td><small class="text-muted">{{ p.model_used }}</small></td>
+          <td><span class="price-badge">₹{{ p.predicted_price }}L</span></td>
+          <td class="text-muted small">{{ p.created_at.strftime('%d %b %Y') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-chart-bar fa-3x mb-3"></i>
+    <h5>No predictions yet</h5>
+    <p>Go to the <a href="{{ url_for('predict') }}" style="color:var(--accent)">Predict page</a> to get started.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

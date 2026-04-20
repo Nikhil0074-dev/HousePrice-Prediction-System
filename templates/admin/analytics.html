@@ -1,0 +1,143 @@
+{% extends "admin/base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block page_title %}Analytics & Reports{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <!-- Avg Price by Location -->
+  <div class="col-lg-8">
+    <div class="card-box">
+      <div class="card-box-header">
+        <i class="fas fa-map-marker-alt me-2" style="color:#e8871a"></i>Average Price by Location (Lakhs)
+      </div>
+      <div class="card-box-body">
+        <canvas id="locPriceChart" height="160"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- BHK Distribution -->
+  <div class="col-lg-4">
+    <div class="card-box">
+      <div class="card-box-header"><i class="fas fa-bed me-2" style="color:#e8871a"></i>BHK Distribution</div>
+      <div class="card-box-body">
+        <canvas id="bhkChart" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Property Type Split -->
+  <div class="col-lg-4">
+    <div class="card-box">
+      <div class="card-box-header"><i class="fas fa-building me-2" style="color:#e8871a"></i>Property Type Split</div>
+      <div class="card-box-body">
+        <canvas id="typeChart" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="col-lg-8">
+    <div class="card-box h-100">
+      <div class="card-box-header"><i class="fas fa-lightbulb me-2" style="color:#e8871a"></i>Market Insights</div>
+      <div class="card-box-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="p-3 rounded-3" style="background:#f0f9ff; border-left:4px solid #0ea5e9;">
+              <div class="fw-bold mb-1" style="color:#0369a1;">Premium Zones</div>
+              <div class="small text-muted">Gangapur Road, College Road & Canada Corner command the highest prices (₹55–80L avg for 2BHK).</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3" style="background:#fef9ec; border-left:4px solid #f59e0b;">
+              <div class="fw-bold mb-1" style="color:#b45309;">Budget Zones</div>
+              <div class="small text-muted">Pathardi Phata, Sinner Road & Trimbak Road offer affordable options (₹18–35L for 2BHK).</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3" style="background:#f0fdf4; border-left:4px solid #22c55e;">
+              <div class="fw-bold mb-1" style="color:#15803d;">Most Popular Config</div>
+              <div class="small text-muted">2BHK Apartments remain the most listed property type across all localities.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3" style="background:#fdf2f8; border-left:4px solid #d946ef;">
+              <div class="fw-bold mb-1" style="color:#86198f;">Price Drivers</div>
+              <div class="small text-muted">Location (40%), Area (35%), Furnishing (15%), Age (10%) are the key factors driving price.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3" style="background:#fff7ed; border-left:4px solid #f97316;">
+              <div class="fw-bold mb-1" style="color:#c2410c;">Villa Premium</div>
+              <div class="small text-muted">Villas are priced 30–40% higher than equivalent apartments in the same locality.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3" style="background:#f8fafc; border-left:4px solid #64748b;">
+              <div class="fw-bold mb-1" style="color:#334155;">Furnishing Impact</div>
+              <div class="small text-muted">Fully furnished properties fetch 12–18% premium. Semi-furnished adds 5–8%.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const LOC_LABELS = {{ loc_labels|safe }};
+const LOC_AVG    = {{ loc_avg|safe }};
+const BHK_LABELS = {{ bhk_labels|safe }};
+const BHK_DATA   = {{ bhk_data|safe }};
+const TYPE_LABELS = {{ type_labels|safe }};
+const TYPE_DATA   = {{ type_data|safe }};
+
+// Location price chart
+new Chart(document.getElementById('locPriceChart'), {
+  type: 'bar',
+  data: {
+    labels: LOC_LABELS,
+    datasets: [{
+      label: 'Avg Price (L)',
+      data: LOC_AVG,
+      backgroundColor: LOC_LABELS.map((_, i) => {
+        const opacity = 1 - (i / LOC_LABELS.length) * 0.5;
+        return `rgba(26, 60, 94, ${opacity})`;
+      }),
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, ticks: { callback: v => '₹' + v + 'L' } }
+    }
+  }
+});
+
+// BHK donut
+new Chart(document.getElementById('bhkChart'), {
+  type: 'doughnut',
+  data: {
+    labels: BHK_LABELS,
+    datasets: [{ data: BHK_DATA, backgroundColor: ['#1a3c5e','#e8871a','#16a34a','#8b5cf6'], borderWidth: 0 }]
+  },
+  options: { plugins: { legend: { position: 'bottom' } }, cutout: '60%' }
+});
+
+// Property type pie
+new Chart(document.getElementById('typeChart'), {
+  type: 'pie',
+  data: {
+    labels: TYPE_LABELS,
+    datasets: [{ data: TYPE_DATA, backgroundColor: ['#2a5580','#e8871a','#16a34a'], borderWidth: 0 }]
+  },
+  options: { plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+{% endblock %}

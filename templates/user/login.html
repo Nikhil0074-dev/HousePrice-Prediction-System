@@ -1,0 +1,47 @@
+{% extends "user/base.html" %}
+{% block title %}Login – HousePrice{% endblock %}
+
+{% block extra_css %}
+<style>
+  .auth-card {
+    max-width: 440px; margin: 2rem auto;
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.1); overflow: hidden;
+  }
+  .auth-header { background: linear-gradient(135deg, var(--primary), #2a5580); color:#fff; padding:2rem; text-align:center; }
+  .auth-header h3 { font-family:'DM Serif Display',serif; font-size:1.8rem; margin:0; }
+  .auth-body { padding: 2rem; }
+  .form-label { font-weight:600; font-size:.88rem; color:var(--primary); }
+  .form-control { border:1.5px solid var(--border); border-radius:10px; padding:.65rem .9rem; }
+  .form-control:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(232,135,26,.15); }
+  .btn-auth { background:var(--accent); color:#fff; border:none; border-radius:12px; padding:.8rem; font-weight:700; width:100%; font-size:1rem; transition:.2s; }
+  .btn-auth:hover { background:#d4761a; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <i class="fas fa-sign-in-alt fa-2x mb-2"></i>
+    <h3>Welcome Back</h3>
+    <p class="mb-0" style="opacity:.8; font-size:.9rem">Login to access your predictions</p>
+  </div>
+  <div class="auth-body">
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" placeholder="you@example.com" required/>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Your password" required/>
+      </div>
+      <button type="submit" class="btn-auth"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
+    </form>
+    <hr class="my-3"/>
+    <p class="text-center text-muted small mb-0">
+      Don't have an account? <a href="{{ url_for('register') }}" style="color:var(--accent); font-weight:600;">Register here</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
